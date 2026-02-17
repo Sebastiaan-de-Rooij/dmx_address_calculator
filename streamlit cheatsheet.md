@@ -5,11 +5,16 @@ Here is the **entire cheat sheet as one single Markdown block**, ready to copy:
 ````markdown
 # 📊 Streamlit Cheat Sheet (Simple Scripts)
 
+
+
+
+
+
 ## 1. Run Your App
 ```bash
 streamlit run app.py
 ````
-
+to exit Streamlit and return to command prompt in Terminal: ctrl + c
 ---
 
 ## 2. Import Streamlit
