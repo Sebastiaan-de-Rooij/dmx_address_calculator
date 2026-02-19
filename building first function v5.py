@@ -23,12 +23,12 @@ we need a loop that doest this on each iteration:
 group_name = "Spiider"
 first_address = 1
 nr_of_channels = 32
-nr_of_fixtures = 16
+nr_of_fixtures = 12
 
 
 def check_range(first_address, nr_of_channels, nr_of_fixtures):
     range_warning = False
-    if first_address + nr_of_fixtures * nr_of_channels > 512:
+    if first_address + nr_of_fixtures * nr_of_channels - 1 > 512:
         range_warning = True
     return range_warning
 
@@ -52,8 +52,10 @@ def print_table(address_table):
 
 range_warning = check_range(first_address, nr_of_channels, nr_of_fixtures)
 
-adress_table = generate_address_table(
-    group_name, first_address, nr_of_channels, nr_of_fixtures
-)
 print(range_warning)
-print_table(adress_table)
+
+if not range_warning:
+    address_table = generate_address_table(
+        group_name, first_address, nr_of_channels, nr_of_fixtures
+    )
+    print_table(address_table)
