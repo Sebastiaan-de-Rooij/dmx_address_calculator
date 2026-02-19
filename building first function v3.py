@@ -22,19 +22,27 @@ we need a loop that doest this on each iteration:
 
 group_name = "Spiider"
 first_address = 1
-number_of_channels = 32
-number_of_fixtures = 8
+nr_of_channels = 32
+nr_of_fixtures = 8
 
-group_list = []
-count = 1
-current_fixture = 1
-current_address = first_address
-while count <= number_of_fixtures:
-    current_row = [group_name, current_fixture, current_address]
-    current_fixture += 1
-    current_address += number_of_channels
-    count += 1
-    group_list.append(current_row)
 
-for item in group_list:
+def generate_address_table(group_name, first_address, nr_of_channels, nr_of_fixtures):
+    table = []
+    current_fixture = 1
+    current_address = first_address
+    while current_fixture <= nr_of_fixtures:
+        current_row = [group_name, current_fixture, current_address]
+        current_fixture += 1
+        current_address += nr_of_channels
+        table.append(current_row)
+    return table
+
+
+adress_table = generate_address_table(
+    group_name, first_address, nr_of_channels, nr_of_fixtures
+)
+
+for item in adress_table:
     print(item[0], item[1], item[2])
+
+# print(adress_table)
