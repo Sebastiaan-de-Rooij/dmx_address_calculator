@@ -15,6 +15,39 @@ st.set_page_config(
     layout="centered",
 )
 
+# ---- CUSTOM CSS (tight table, no index, compact layout) ----
+
+st.markdown(
+    """
+<style>
+
+/* Hide index column */
+thead tr th:first-child {display:none}
+tbody th {display:none}
+
+/* Make table shrink to content */
+div[data-testid="stTable"] > div {
+    width: fit-content !important;
+}
+
+/* Prevent full width stretching */
+table {
+    width: auto !important;
+}
+
+/* Tight padding + left align */
+thead th, tbody td {
+    text-align: left !important;
+    padding: 6px 12px !important;
+}
+
+</style>
+""",
+    unsafe_allow_html=True,
+)
+
+# ---- TITLE ----
+
 st.title("DMX Address Calculator")
 st.caption(f"Version {VERSION}")
 
@@ -75,14 +108,9 @@ if st.button("Calculate"):
 
         st.subheader("Address Table")
 
-        # Convert backend output to DataFrame
         df_raw = pd.DataFrame(address_table)
 
-        # Based on your backend structure:
-        # 0 = Group
-        # 1 = Fixture number
-        # 3 = Universe number
-        # 5 = Address
+        # Extract correct columns from backend structure
         df = pd.DataFrame(
             {
                 "Group": df_raw[0],
@@ -92,13 +120,10 @@ if st.button("Calculate"):
             }
         )
 
-        # Remove index (no row numbers)
-        df = df.reset_index(drop=True)
+        # Remove index completely
+        df.index = [""] * len(df)
 
-        # Left align everything
-        styled_df = df.style.set_properties(**{"text-align": "left"})
-
-        st.table(styled_df)
+        st.table(df)
 
         st.subheader("Last Channel Used")
         st.write(last_channel)
