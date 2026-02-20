@@ -1,10 +1,14 @@
 import streamlit as st
+import pandas as pd
+
 from dmx_address_calculator import (
     check_range,
     generate_address_table,
     calculate_last_channel,
     VERSION,
 )
+
+# ---- PAGE CONFIG ----
 
 st.set_page_config(
     page_title="DMX Address Calculator",
@@ -38,7 +42,7 @@ with col2:
 
 st.divider()
 
-# ---- CALCULATION BUTTON ----
+# ---- CALCULATION ----
 
 if st.button("Calculate"):
 
@@ -71,7 +75,30 @@ if st.button("Calculate"):
 
         st.subheader("Address Table")
 
-        st.table(address_table)
+        # Convert backend output to DataFrame
+        df_raw = pd.DataFrame(address_table)
+
+        # Based on your backend structure:
+        # 0 = Group
+        # 1 = Fixture number
+        # 3 = Universe number
+        # 5 = Address
+        df = pd.DataFrame(
+            {
+                "Group": df_raw[0],
+                "Fixture": df_raw[1],
+                "Universe": df_raw[3],
+                "Address": df_raw[5],
+            }
+        )
+
+        # Remove index (no row numbers)
+        df = df.reset_index(drop=True)
+
+        # Left align everything
+        styled_df = df.style.set_properties(**{"text-align": "left"})
+
+        st.table(styled_df)
 
         st.subheader("Last Channel Used")
         st.write(last_channel)
