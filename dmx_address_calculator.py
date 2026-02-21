@@ -2,7 +2,6 @@
 
 DMX Address Calculator
 Author: Sebastiaan de Rooij
-Version: 0.1.0
 
 contains the logic for the DMX address calculator
 
