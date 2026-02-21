@@ -152,7 +152,7 @@ if submitted:
     )
 
     if range_warning:
-        st.error("Out of range for this universe size.")
+        st.error("Address range exceeds universe size.")
     else:
 
         df_raw = pd.DataFrame(address_table)
