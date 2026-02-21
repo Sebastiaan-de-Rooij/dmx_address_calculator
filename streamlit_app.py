@@ -116,8 +116,10 @@ with col4:
 with col5:
     nr_of_channels = st.number_input("Channels", min_value=1, value=1)
 
-with col6:
-    universe_size = st.number_input("Universe Size", min_value=1, value=512)
+# with col6:
+#     universe_size = st.number_input("Universe Size", min_value=1, value=512)
+# Commented out, funtionallity unneeded for now
+
 
 st.markdown("---")
 
