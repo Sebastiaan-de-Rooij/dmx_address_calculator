@@ -15,30 +15,39 @@ st.set_page_config(
     layout="centered",
 )
 
-# ---- CUSTOM CSS (tight table, no index, compact layout) ----
+# ---- GLOBAL CSS ----
 
 st.markdown(
     """
 <style>
 
-/* Hide index column */
+/* Center and constrain main content width */
+.block-container {
+    max-width: 700px;
+    padding-top: 2rem;
+}
+
+/* Hide table index */
 thead tr th:first-child {display:none}
 tbody th {display:none}
 
-/* Make table shrink to content */
+/* Tight table */
 div[data-testid="stTable"] > div {
     width: fit-content !important;
 }
 
-/* Prevent full width stretching */
 table {
     width: auto !important;
 }
 
-/* Tight padding + left align */
 thead th, tbody td {
     text-align: left !important;
     padding: 6px 12px !important;
+}
+
+/* Reduce column gap */
+div[data-testid="stHorizontalBlock"] {
+    gap: 12px !important;
 }
 
 </style>
@@ -53,24 +62,40 @@ st.caption(f"Version {VERSION}")
 
 st.divider()
 
-# ---- INPUT SECTION ----
+# ---- INPUT SECTION (compact container) ----
 
-group_name = st.text_input("Group name", value="Group 1")
+group_name = st.text_input(
+    "Group name",
+    value="Group 1",
+    max_chars=25,
+)
 
-col1, col2 = st.columns(2)
+st.markdown("")
+
+col1, col2, col3 = st.columns([1, 1, 1])
 
 with col1:
     universe = st.number_input("Universe", min_value=1, value=1, step=1)
+
+with col2:
     first_fixture_nr = st.number_input(
         "First fixture number", min_value=1, value=1, step=1
     )
+
+with col3:
     nr_of_fixtures = st.number_input("Number of fixtures", min_value=1, value=1, step=1)
 
-with col2:
+col4, col5, col6 = st.columns([1, 1, 1])
+
+with col4:
     first_address = st.number_input("First address", min_value=1, value=1, step=1)
+
+with col5:
     nr_of_channels = st.number_input(
         "Channels per fixture", min_value=1, value=1, step=1
     )
+
+with col6:
     universe_size = st.number_input("Universe size", min_value=1, value=512, step=1)
 
 st.divider()
@@ -104,13 +129,10 @@ if st.button("Calculate"):
     if range_warning:
         st.error("⚠ Out of range for this universe size.")
     else:
-        st.success("Addresses generated successfully.")
-
         st.subheader("Address Table")
 
         df_raw = pd.DataFrame(address_table)
 
-        # Extract correct columns from backend structure
         df = pd.DataFrame(
             {
                 "Group": df_raw[0],
@@ -120,7 +142,6 @@ if st.button("Calculate"):
             }
         )
 
-        # Remove index completely
         df.index = [""] * len(df)
 
         st.table(df)
