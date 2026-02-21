@@ -101,7 +101,7 @@ with st.form("dmx_form", enter_to_submit=False):
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        group_name = st.text_input("Group Name", placeholder="e.g. Robin")
+        group_name = st.text_input("Group Name", placeholder="e.g. Robe Robin")
 
     with col2:
         universe = st.number_input("Universe", min_value=1, value=1)
