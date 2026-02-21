@@ -15,7 +15,7 @@ the print functions are for testing purposes and will be commented out
 
 """
 
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 
 group_name = "group 1"
 universe = 1
