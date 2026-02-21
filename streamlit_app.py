@@ -15,19 +15,51 @@ st.set_page_config(
     layout="centered",
 )
 
-# ---- GLOBAL CSS ----
+# ---- MA STYLE CSS ----
 
 st.markdown(
     """
 <style>
 
-/* Center and constrain main content width */
+/* Constrain layout width */
 .block-container {
-    max-width: 700px;
+    max-width: 650px;
     padding-top: 2rem;
 }
 
-/* Hide table index */
+/* Typography */
+html, body, [class*="css"]  {
+    font-family: "Inter", sans-serif;
+}
+
+/* Input styling */
+div[data-baseweb="input"] input {
+    background-color: #1a1c22 !important;
+    border: 1px solid #2c2f36 !important;
+    color: #e5e7eb !important;
+    border-radius: 4px !important;
+}
+
+/* Button styling */
+button[kind="secondary"] {
+    background-color: #1a1c22 !important;
+    border: 1px solid #2c2f36 !important;
+    color: #e5e7eb !important;
+    border-radius: 4px !important;
+}
+
+button[kind="secondary"]:hover {
+    border: 1px solid #3a3f47 !important;
+}
+
+/* Column spacing */
+div[data-testid="stHorizontalBlock"] {
+    gap: 14px !important;
+}
+
+/* ---- TABLE ---- */
+
+/* Hide index */
 thead tr th:first-child {display:none}
 tbody th {display:none}
 
@@ -38,16 +70,13 @@ div[data-testid="stTable"] > div {
 
 table {
     width: auto !important;
+    border: 1px solid #2c2f36 !important;
 }
 
 thead th, tbody td {
     text-align: left !important;
-    padding: 6px 12px !important;
-}
-
-/* Reduce column gap */
-div[data-testid="stHorizontalBlock"] {
-    gap: 12px !important;
+    padding: 6px 14px !important;
+    border-color: #2c2f36 !important;
 }
 
 </style>
@@ -55,54 +84,46 @@ div[data-testid="stHorizontalBlock"] {
     unsafe_allow_html=True,
 )
 
-# ---- TITLE ----
+# ---- HEADER ----
 
-st.title("DMX Address Calculator")
-st.caption(f"Version {VERSION}")
+st.markdown("## DMX Address Calculator")
+st.caption(f"v{VERSION}")
 
-st.divider()
+st.markdown("---")
 
-# ---- INPUT SECTION (compact container) ----
+# ---- INPUTS ----
 
-group_name = st.text_input(
-    "Group name",
-    value="Group 1",
-    max_chars=25,
-)
+group_name = st.text_input("Group Name")
 
 st.markdown("")
 
-col1, col2, col3 = st.columns([1, 1, 1])
+col1, col2, col3 = st.columns(3)
 
 with col1:
-    universe = st.number_input("Universe", min_value=1, value=1, step=1)
+    universe = st.number_input("Universe", min_value=1, value=1)
 
 with col2:
-    first_fixture_nr = st.number_input(
-        "First fixture number", min_value=1, value=1, step=1
-    )
+    first_fixture_nr = st.number_input("First Fixture", min_value=1, value=1)
 
 with col3:
-    nr_of_fixtures = st.number_input("Number of fixtures", min_value=1, value=1, step=1)
+    nr_of_fixtures = st.number_input("Fixtures", min_value=1, value=1)
 
-col4, col5, col6 = st.columns([1, 1, 1])
+col4, col5, col6 = st.columns(3)
 
 with col4:
-    first_address = st.number_input("First address", min_value=1, value=1, step=1)
+    first_address = st.number_input("Start Address", min_value=1, value=1)
 
 with col5:
-    nr_of_channels = st.number_input(
-        "Channels per fixture", min_value=1, value=1, step=1
-    )
+    nr_of_channels = st.number_input("Channels", min_value=1, value=1)
 
 with col6:
-    universe_size = st.number_input("Universe size", min_value=1, value=512, step=1)
+    universe_size = st.number_input("Universe Size", min_value=1, value=512)
 
-st.divider()
+st.markdown("---")
 
-# ---- CALCULATION ----
+# ---- CALCULATE ----
 
-if st.button("Calculate"):
+if st.button("CALCULATE"):
 
     range_warning = check_range(
         first_address,
@@ -127,9 +148,9 @@ if st.button("Calculate"):
     )
 
     if range_warning:
-        st.error("⚠ Out of range for this universe size.")
+        st.error("Out of range for this universe size.")
     else:
-        st.subheader("Address Table")
+        st.markdown("### Address Table")
 
         df_raw = pd.DataFrame(address_table)
 
@@ -146,5 +167,24 @@ if st.button("Calculate"):
 
         st.table(df)
 
-        st.subheader("Last Channel Used")
-        st.write(last_channel)
+        # ---- INLINE LAST CHANNEL (tight spacing) ----
+
+        st.markdown(
+            f"""
+        <div style="
+            width: fit-content;
+            margin-top: 14px;
+            display: flex;
+            gap: 12px;
+            font-size: 15px;
+        ">
+            <span style="font-weight: 600; color: #cbd5e1;">
+                Last Channel
+            </span>
+            <span style="font-weight: 700; color: #ffffff;">
+                {last_channel}
+            </span>
+        </div>
+        """,
+            unsafe_allow_html=True,
+        )
