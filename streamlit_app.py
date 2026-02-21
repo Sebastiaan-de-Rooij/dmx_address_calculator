@@ -86,46 +86,48 @@ thead th, tbody td {
 
 # ---- HEADER ----
 
-st.markdown("## DMX Address Calculator")
-st.caption(f"v{VERSION}")
+st.markdown(
+    "<h3 style='color: rgba(255,255,255,0.6);'>DMX Address Calculator</h3>",
+    unsafe_allow_html=True,
+)
 
-st.markdown("---")
 
 # ---- INPUTS ----
 
-group_name = st.text_input("Group Name")
-
 st.markdown("")
 
-col1, col2, col3 = st.columns(3)
+with st.form("dmx_form", enter_to_submit=False):
 
-with col1:
-    universe = st.number_input("Universe", min_value=1, value=1)
+    col1, col2, col3 = st.columns(3)
 
-with col2:
-    first_fixture_nr = st.number_input("First Fixture", min_value=1, value=1)
+    with col1:
+        group_name = st.text_input("Group Name")
 
-with col3:
-    nr_of_fixtures = st.number_input("Fixtures", min_value=1, value=1)
+    with col2:
+        universe = st.number_input("Universe", min_value=1, value=1)
 
-col4, col5, col6 = st.columns(3)
+    with col3:
+        first_fixture_nr = st.number_input("First Fixture", min_value=1, value=1)
 
-with col4:
-    first_address = st.number_input("Start Address", min_value=1, value=1)
+    col4, col5, col6 = st.columns(3)
 
-with col5:
-    nr_of_channels = st.number_input("Channels", min_value=1, value=1)
+    with col4:
+        nr_of_fixtures = st.number_input("Fixtures", min_value=1, value=1)
 
-# with col6:
-#     universe_size = st.number_input("Universe Size", min_value=1, value=512)
-# Commented out, funtionallity unneeded for now
+    with col5:
+        first_address = st.number_input("Start Address", min_value=1, value=1)
 
+    with col6:
+        nr_of_channels = st.number_input("Channels", min_value=1, value=1)
 
-st.markdown("---")
+    submitted = st.form_submit_button("CALCULATE", type="primary")
+
 
 # ---- CALCULATE ----
 
-if st.button("CALCULATE"):
+universe_size = 512
+
+if submitted:
 
     range_warning = check_range(
         first_address,
@@ -152,7 +154,6 @@ if st.button("CALCULATE"):
     if range_warning:
         st.error("Out of range for this universe size.")
     else:
-        st.markdown("### Address Table")
 
         df_raw = pd.DataFrame(address_table)
 
@@ -171,22 +172,19 @@ if st.button("CALCULATE"):
 
         # ---- INLINE LAST CHANNEL (tight spacing) ----
 
-        st.markdown(
-            f"""
+    st.markdown(
+        f"""
         <div style="
-            width: fit-content;
             margin-top: 14px;
-            display: flex;
-            gap: 12px;
             font-size: 15px;
+            color: #cbd5e1;
         ">
-            <span style="font-weight: 600; color: #cbd5e1;">
-                Last Channel
-            </span>
-            <span style="font-weight: 700; color: #ffffff;">
-                {last_channel}
-            </span>
+            Last Channel: {last_channel}
         </div>
         """,
-            unsafe_allow_html=True,
-        )
+        unsafe_allow_html=True,
+    )
+
+
+st.markdown("<br><br>", unsafe_allow_html=True)
+st.caption(f"v{VERSION}     © 2026 Sebastiaan de Rooij")
