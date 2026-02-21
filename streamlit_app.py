@@ -107,18 +107,18 @@ with st.form("dmx_form", enter_to_submit=False):
         universe = st.number_input("Universe", min_value=1, value=1)
 
     with col3:
-        first_fixture_nr = st.number_input("First Fixture", min_value=1, value=1)
+        first_fixture_nr = st.number_input("First Fixture Number", min_value=1, value=1)
 
     col4, col5, col6 = st.columns(3)
 
     with col4:
-        nr_of_fixtures = st.number_input("Fixtures", min_value=1, value=1)
+        nr_of_fixtures = st.number_input("Number of Fixtures", min_value=1, value=1)
 
     with col5:
-        first_address = st.number_input("Start Address", min_value=1, value=1)
+        first_address = st.number_input("Starting Address", min_value=1, value=1)
 
     with col6:
-        nr_of_channels = st.number_input("Channels", min_value=1, value=1)
+        nr_of_channels = st.number_input("Channels per Fixture", min_value=1, value=1)
 
     submitted = st.form_submit_button("CALCULATE", type="primary")
 
